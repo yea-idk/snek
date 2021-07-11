@@ -118,9 +118,7 @@ if (tonumber(arg[3]) == 1) then
 end
 print('Type a direction to move or \'q\' to quit then press enter!')
 print('w a s d')
-if tonumber(arg[5]) == 0 then
-	res = io.read()
-end
+res = io.read()
 if (res == 'w') then
 	tmp0 = 1
 	tmp1 = 0
