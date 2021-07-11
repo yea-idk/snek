@@ -1,7 +1,7 @@
 if not (arg[1] and arg[2] and arg[3] and arg[4]) then
 	print('Missing arguments!\n' .. arg[0] .. ' [grid size x + 1] [grid size y + 1] [debug] [ultra hard mode]')
 	goto eof
-
+end
 function diff(a, b)
 	return math.abs(a - b)
 end
