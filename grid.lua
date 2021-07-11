@@ -1,17 +1,10 @@
-if not (arg[1] and arg[2] and arg[3] and arg[4] and arg[5]) then
-	print('Missing arguments!\n' .. arg[0] .. ' [grid size x + 1] [grid size y + 1] [debug] [ultra hard mode] [ai mode]')
+if not (arg[1] and arg[2] and arg[3] and arg[4]) then
+	print('Missing arguments!\n' .. arg[0] .. ' [grid size x + 1] [grid size y + 1] [debug] [ultra hard mode]')
 	goto eof
-end
-
-if tonumber(arg[5]) == 1 then --not implimented yet
-	--load functions from someone elses code
-	--dofile('path.lua')
-end
 
 function diff(a, b)
 	return math.abs(a - b)
 end
-
 function drawscreen()
 	os.execute('clear')
 	print('Steps: ' .. steps .. '\nScore: ' .. score - 3 .. '\nGame board:')
@@ -22,11 +15,11 @@ function drawscreen()
 		for j = 1, arg[1] - 1 do
 			tmp2 = board[tmp0][tmp1]
 			if (tmp2 == 0) then
-				string = string .. '- '
+				string = string .. '  '
 			elseif (tmp2 > 0) and (tmp2 < score) then
 				string = string .. '# '
 			elseif (tmp2 == score) then
-				string = string .. '% '
+				string = string .. 'O '
 			elseif (tmp2 == -1) then
 				string = string .. '* '
 			else
@@ -88,7 +81,7 @@ function update()
 		pause = 0
 	end
 	steps = steps + 1
-	lives = 500
+	lives = 4
 	board[playery][playerx] = score
 end
 
@@ -99,7 +92,7 @@ score = 3
 applex = 0
 appley = 0
 pause = 0
-lives = 500
+lives = 4
 board = {}
 tmp0 = arg[2]
 for i = 1, arg[2] do
@@ -123,128 +116,10 @@ drawscreen()
 if (tonumber(arg[3]) == 1) then
 	drawdebug()
 end
-print('Type a direction to move then press enter!')
+print('Type a direction to move or \'q\' to quit then press enter!')
 print('w a s d')
-if tonumber(arg[5]) == 0 then --human control
+if tonumber(arg[5]) == 0 then
 	res = io.read()
-else
-	if not (playery + 1 > tonumber(arg[2] - 1)) then
-		posup = board[playery + 1][playerx]
-		if posup == nil then
-			posup = 1
-		end
-	else
-		posup = 1
-	end
-	if (playery > 1) then
-		posdown = board[playery - 1][playerx]
-		if posdown == nil then
-			posdown = 1
-		end
-	else
-		posdown = 1
-	end
-	if not (playerx + 1 > tonumber(arg[1] - 1)) then
-		posleft = board[playery][playerx + 1]
-		if posleft == nil then
-			posleft = 1
-		end
-	else
-		posleft = 1
-	end
-	if not (playerx < 1) then
-		posright = board[playery][playerx - 1]
-		if posright == nil then
-			posright = 1
-		end
-	else
-		posright = 1
-	end
-	if (applex > playerx) then
-		xdir = 1
-	elseif (applex < playerx) then
-		xdir = -1
-	end
-	if (appley > playery) then
-		ydir = -1
-	elseif (appley < playery) then
-		ydir = 1
-	end
-	xdist = diff(applex, playerx)
-	ydist = diff(appley, playery)
-	if (xdist > 0) and (lives > 250) then
-		if (xdir == 1) then
-			if not (posleft >= 1) then
-				res = 'a'
-			else
-				res = math.random(4)
-			end
-		elseif xdir == -1 then
-			if not (posright >= 1) then
-				res = 'd'
-			else
-				res = math.random(4)
-			end
-		end
-	elseif (ydist > 0) and (lives > 250) then
-		if ydir == 1 then
-			if not (posup >= 1) then
-				res = 's'
-			else
-				res = math.random(4)
-			end
-		elseif ydir == -1 then
-			if not (posdown >= 1) then
-				res = 'w'
-			else
-				res = math.random(4)
-			end
-		end
-	else
-		res = math.random(4)
-	end
-	print('Dist to aX: ' .. xdist)
-	print('Dist to aY: ' .. ydist)
-	print(' ' .. posup)
-	print(posleft .. ' ' .. posright)
-	print(' ' .. posdown)
-	if lives == 4 then
-		res = math.random(4)
-	end
-	if math.random(100) == 1 then
-		res = math.random(4)
-	end
-	randres = 1
-	if (res == 'w') or (res == 'a') or (res == 's') or (res == 'd') then
-		if (opx == playerx) and (opy == playery) and (lastres == res) then
-			randres = 1
-		end
-		lastres = '' .. res
-		randres = 0
-	end
-	while randres == 1 do
-		if (res == lastres) then
-			res = math.random(4)
-		else
-			randres = 0
-		end
-		if res == 1 then
-			res = 'w'
-		end
-		if res == 2 then
-			res = 's'
-		end
-		if res == 3 then
-			res = 'a'
-		end
-		if res == 4 then
-			res = 'd'
-		end
-	end
-	opx = playerx + 0
-	opy = playery + 0
-	print(res .. '\nPress enter for next step')
-	io.read()
 end
 if (res == 'w') then
 	tmp0 = 1
